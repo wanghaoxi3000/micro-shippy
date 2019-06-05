@@ -8,11 +8,10 @@ import (
 	"log"
 
 	pb "./proto/consignment"
-	"google.golang.org/grpc"
+	"github.com/micro/go-micro"
 )
 
 const (
-	ADDRESS           = "localhost:50051"
 	DEFAULT_INFO_FILE = "consignment.json"
 )
 
@@ -31,15 +30,11 @@ func parseFile(fileName string) (*pb.Consignment, error) {
 }
 
 func main() {
-	// 连接到 gRPC 服务器
-	conn, err := grpc.Dial(ADDRESS, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("connect error: %v", err)
-	}
-	defer conn.Close()
+	service := micro.NewService(micro.Name("go.micro.srv.consignment.cli"))
+	service.Init()
 
 	// 初始化 gRPC 客户端
-	client := pb.NewShippingServiceClient(conn)
+	client := pb.NewShippingServiceClient("go.micro.srv.consignment", service.Client())
 
 	// 解析货物信息
 	infoFile := DEFAULT_INFO_FILE
