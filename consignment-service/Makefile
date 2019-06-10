@@ -1,12 +1,6 @@
 build:
 	protoc -I. --go_out=plugins=micro:. proto/consignment/consignment.proto
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 
-	go build -o consignment-service main.go
-
-windows-build:
-	protoc -I. --go_out=plugins=micro:. proto/consignment/consignment.proto
-	set CGO_ENABLED=0  GOOS=linux GOARCH=amd64 
-	go build -o consignment-service main.go
+	CGO_ENABLED=0 go build -o consignment-service main.go
 
 docker:
 	docker build -t consignment-service .

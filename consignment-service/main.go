@@ -39,10 +39,13 @@ type service struct {
 func (s *service) CreateConsignment(ctx context.Context, req *pb.Consignment, resp *pb.Response) error {
 	// 接收承运的货物
 	consignment, err := s.repo.Create(req)
+	log.Printf("receive a consignment\n")
 	if err != nil {
 		return err
 	}
-	resp = &pb.Response{Created: true, Consignment: consignment}
+
+	resp.Created = true
+	resp.Consignment = consignment
 	return nil
 }
 

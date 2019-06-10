@@ -9,6 +9,7 @@ WORKDIR /app
 
 # 将微服务的服务端运行文件拷贝到 /app 下
 ADD consignment-service /app/consignment-service
+RUN chmod +x /app/consignment-service
 
 # 运行服务端
 CMD ["./consignment-service"]

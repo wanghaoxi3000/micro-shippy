@@ -45,6 +45,7 @@ func main() {
 
 	// 调用 RPC
 	// 将货物存储到我们自己的仓库里
+	log.Printf("created: %v", consignment)
 	resp, err := client.CreateConsignment(context.Background(), consignment)
 	if err != nil {
 		log.Fatalf("create consignment error: %v", err)
@@ -58,6 +59,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to list consignments: %v", err)
 	}
+
 	for _, c := range resp.Consignments {
 		log.Printf("%+v", c)
 	}
