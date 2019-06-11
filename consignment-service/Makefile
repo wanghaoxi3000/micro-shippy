@@ -1,6 +1,6 @@
 build:
 	protoc -I. --go_out=plugins=micro:. proto/consignment/consignment.proto
-	CGO_ENABLED=0 go build -o consignment-service main.go
+	CGO_ENABLED=0 go build -o consignment-service
 
 docker:
 	docker build -t consignment-service .

@@ -1,6 +1,11 @@
 build:
+	CGO_ENABLED=0 go build -o vessel-service
+
+.PHONY: proto
+proto:
 	protoc -I. --go_out=plugins=micro:. proto/vessel/vessel.proto
-	CGO_ENABLED=0 go build -o vessel-service main.go
+
+all: proto build
 
 docker:
 	docker build -t vessel-service .
