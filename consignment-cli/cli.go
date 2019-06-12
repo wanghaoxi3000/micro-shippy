@@ -6,9 +6,11 @@ import (
 	"errors"
 	"io/ioutil"
 	"log"
+	"os"
 
 	pb "./proto/consignment"
 	"github.com/micro/go-micro"
+	"github.com/micro/go-micro/metadata"
 )
 
 const (
@@ -33,6 +35,12 @@ func main() {
 	service := micro.NewService(micro.Name("go.micro.srv.consignment.cli"))
 	service.Init()
 
+	// 在命令行中指定用户 token
+	if len(os.Args) < 2 {
+		log.Fatalln("Not enough arguments, expecing token.")
+	}
+	token := os.Args[1]
+
 	// 初始化 gRPC 客户端
 	client := pb.NewShippingServiceClient("go.micro.srv.consignment", service.Client())
 
@@ -43,15 +51,19 @@ func main() {
 		log.Fatalf("parse info file error: %v", err)
 	}
 
+	// 创建带有用户 token 的 context
+	// consignment-service 服务端将从中取出 token，解密取出用户身份
+	tokenContext := metadata.NewContext(context.Background(), map[string]string{
+		"token": token,
+	})
+
 	// 调用 RPC
-	// 将货物存储到我们自己的仓库里
+	// 将货物存储到指定用户的仓库里
 	log.Printf("created: %v", consignment)
-	resp, err := client.CreateConsignment(context.Background(), consignment)
+	resp, err := client.CreateConsignment(tokenContext, consignment)
 	if err != nil {
 		log.Fatalf("create consignment error: %v", err)
 	}
-
-	// 新货物是否托运成功
 	log.Printf("created: %t", resp.Created)
 
 	// 列出目前所有托运的货物

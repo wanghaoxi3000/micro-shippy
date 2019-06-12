@@ -1,5 +1,5 @@
 build:
-	CGO_ENABLED=0 go build -o user-service
+	CGO_ENABLED=0 go build -o user-cli
 
 docker:
 	docker build -t user-cli .

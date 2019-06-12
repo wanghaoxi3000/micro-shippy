@@ -50,5 +50,10 @@ func (repo *UserRepository) Create(u *pb.User) error {
 }
 
 func (repo *UserRepository) GetByEmailAndPassword(u *pb.User) (*pb.User, error) {
-	return u, nil
+	for _, v := range repo.db {
+		if v.Email == u.Email {
+			return v, nil
+		}
+	}
+	return nil, fmt.Errorf("not find user %v", u.Email)
 }

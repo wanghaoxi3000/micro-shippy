@@ -72,6 +72,15 @@ func main() {
 				log.Println(v)
 			}
 
+			authResp, err := client.Auth(context.TODO(), &pb.User{
+				Email:    email,
+				Password: password,
+			})
+			if err != nil {
+				log.Fatalf("auth failed: %v", err)
+			}
+			log.Println("token: ", authResp.Token)
+
 			os.Exit(0)
 		}),
 	)

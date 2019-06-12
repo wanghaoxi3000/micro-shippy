@@ -20,7 +20,8 @@ func main() {
 	)
 	s.Init()
 
-	pb.RegisterUserServiceHandler(s.Server(), &handler{repo})
+	t := TokenService{repo}
+	pb.RegisterUserServiceHandler(s.Server(), &handler{repo, &t})
 	if err := s.Run(); err != nil {
 		log.Fatalf("user service error: %v\n", err)
 	}
