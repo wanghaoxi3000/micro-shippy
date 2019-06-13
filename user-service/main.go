@@ -20,8 +20,10 @@ func main() {
 	)
 	s.Init()
 
+	publisher := micro.NewPublisher(topic, s.Client())
+
 	t := TokenService{repo}
-	pb.RegisterUserServiceHandler(s.Server(), &handler{repo, &t})
+	pb.RegisterUserServiceHandler(s.Server(), &handler{repo, &t, publisher})
 	if err := s.Run(); err != nil {
 		log.Fatalf("user service error: %v\n", err)
 	}

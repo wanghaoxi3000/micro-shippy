@@ -4,13 +4,18 @@ import (
 	"context"
 	"errors"
 
+	"github.com/micro/go-micro"
+
 	pb "./proto/user"
 	"golang.org/x/crypto/bcrypt"
 )
 
+const topic = "user.created"
+
 type handler struct {
 	repo         Repository
 	tokenService Authable
+	Publisher    micro.Publisher
 }
 
 func (h *handler) Create(ctx context.Context, req *pb.User, resp *pb.Response) error {
@@ -25,6 +30,11 @@ func (h *handler) Create(ctx context.Context, req *pb.User, resp *pb.Response) e
 		return nil
 	}
 	resp.User = req
+
+	// 发布带有用户所有信息的消息
+	if err := h.Publisher.Publish(ctx, req); err != nil {
+		return err
+	}
 	return nil
 }
 
