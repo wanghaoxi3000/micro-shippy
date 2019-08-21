@@ -1,5 +1,5 @@
 # micro-shippy
-根据 [Golang 微服务教程](https://wuyin.io/2018/05/10/microservices-part-1-introduction-and-consignment-service/)，初步实践了下微服务的构建过程。
+根据 [Golang 微服务教程](https://wuyin.io/2018/05/10/microservices-part-1-introduction-and-consignment-service/)(英文原文链接[ewanvalentine.io](https://ewanvalentine.io/microservices-in-golang-part-1/))，初步实践了下微服务的构建过程。
 
 
 ## 准备
